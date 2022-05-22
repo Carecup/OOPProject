@@ -3,9 +3,10 @@
 
 // 1.Builder pattern (done)
 // 2. Container (done)
-// 3. Iterator ( WIP 0%)
-// 4. Emplace_back должна помещать объект класса без параметров. 
+// 3. Iterator (done)
+// 4.вычисление Price(done)
 #include "Builder.h"
+#include "Windows.h"
 
 
 
@@ -30,5 +31,6 @@ int main()
     cont[1].info();
     auto it = container<Order>::Iterator(cont.begin());
     it++;
-    it.getCurrent().info();
+    cont[1].starttime.tm_hour -= 1;
+    cout << cont[1].price();
 }

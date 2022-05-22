@@ -149,9 +149,6 @@ ostream& operator << (ostream& out, container<T> a)
     for (int i = 0; i < a.size(); ++i)
         out << a[i] << " ";
     return out;
-
-
-
 };
 
 

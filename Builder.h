@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "container.h"
+#include <ctime>
 
 
 
@@ -92,19 +93,20 @@ public:
         std::cout << "Mask" << std::endl;
     }
 
-    static int price() {
+    constexpr int price() {
         return 100;
     }
 
 };
 class Order {
 public:
-    std::vector<ski> vsk;
-    std::vector<skiBoots> vskb;
-    std::vector<snowboard> vsn;
-    std::vector<snowboardBoots> vsnb;
-    std::vector<skiSticks> vsks;
-    std::vector<Mask> vm;
+    container<ski> vsk;
+    container<skiBoots> vskb;
+    container<snowboard> vsn;
+    container<snowboardBoots> vsnb;
+    container<skiSticks> vsks;
+    container<Mask> vm;
+    tm starttime;
     void info() {
         int i;
         for (i = 0; i < vsk.size(); ++i)  vsk[i].info();
@@ -113,6 +115,50 @@ public:
         for (i = 0; i < vsnb.size(); ++i)  vsnb[i].info();
         for (i = 0; i < vsks.size(); ++i)  vsks[i].info();
         for (i = 0; i < vm.size(); ++i)  vm[i].info();
+    }
+	tm getTime() {
+        struct tm newtime;
+        __time64_t long_time;
+        char timebuf[26];
+        errno_t err;
+        // Get time as 64-bit integer.
+        _time64(&long_time);
+        // Convert to local time.
+        err = _localtime64_s(&newtime, &long_time);
+        return newtime;
+	}
+    Order()
+    {
+        starttime = this->getTime();
+    }
+    int time_passed()
+    {
+        int diff = (this->getTime().tm_hour * 3600 + this->getTime().tm_min * 60 + this->getTime().tm_sec) - (this->starttime.tm_hour * 3600 + this->starttime.tm_min * 60 + this->starttime.tm_sec);
+        if (diff<0)
+        {
+            diff += 24 * 3600;
+        }
+        int c = diff / 3600;
+        if (diff%3600 ==0)
+        {
+            return c;
+        }
+        if (diff%3600 !=0)
+        {
+            return (c+1);
+        }
+    }
+    int price()
+    {
+        int i;
+        int buf=0;
+        for (i = 0; i < vsk.size(); ++i)  buf+=vsk[i].price();
+        for (i = 0; i < vskb.size(); ++i)  buf+=vskb[i].price();
+        for (i = 0; i < vsn.size(); ++i)  buf+=vsn[i].price();
+        for (i = 0; i < vsnb.size(); ++i)  buf+=vsnb[i].price();
+        for (i = 0; i < vsks.size(); ++i)  buf+=vsks[i].price();
+        for (i = 0; i < vm.size(); ++i)  buf+=vm[i].price();
+        return buf*this->time_passed();
     }
 };
 
