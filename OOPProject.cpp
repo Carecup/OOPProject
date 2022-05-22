@@ -31,6 +31,7 @@ int main()
     cont[1].info();
     auto it = container<Order>::Iterator(cont.begin());
     it++;
-    cont[1].starttime.tm_hour -= 1;
-    cout << cont[1].price();
+    it.getCurrent().starttime.tm_hour -= 3;
+    cout << it.getCurrent().price();
+    
 }

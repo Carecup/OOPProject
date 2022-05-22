@@ -117,14 +117,10 @@ public:
         for (i = 0; i < vm.size(); ++i)  vm[i].info();
     }
 	tm getTime() {
-        struct tm newtime;
+		tm newtime;
         __time64_t long_time;
-        char timebuf[26];
-        errno_t err;
-        // Get time as 64-bit integer.
         _time64(&long_time);
-        // Convert to local time.
-        err = _localtime64_s(&newtime, &long_time);
+        _localtime64_s(&newtime, &long_time);
         return newtime;
 	}
     Order()
